@@ -46,53 +46,101 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/weather_img"
-            android:layout_width="40dp"
-            android:layout_height="26dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/cloudiness"
-            app:layout_constraintEnd_toEndOf="@id/temperature"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date" />
-
-        <TextView
-            android:id="@+id/weather"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="Cloudy"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/weather_img"
-            app:layout_constraintStart_toStartOf="@id/weather_img"
-            app:layout_constraintTop_toBottomOf="@id/weather_img" />
-
-        <TextView
-            android:id="@+id/temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="25"
-            android:textColor="@color/black"
-            android:textSize="60sp"
-            app:layout_constraintBottom_toBottomOf="@id/weather"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/weather_img" />
-
         <LinearLayout
-            android:id="@+id/linear"
+            android:id="@+id/linear1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginEnd="270dp"
             android:orientation="vertical"
             android:padding="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/weather">
+            app:layout_constraintTop_toBottomOf="@id/date">
 
 
+            <!--1________Облачность_________-->
+            <ImageView
+                android:id="@+id/weather_img"
+                android:layout_width="40dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/cloudiness" />
+
+            <TextView
+                android:id="@+id/weather"
+                style="@style/weather_info"
+                android:text="Cloudy"
+                android:textSize="18sp" />
+
+
+            <!-- 2________Влажность_________-->
+            <ImageView
+                android:id="@+id/humidity_img"
+                style="@style/weather_img"
+                android:src="@drawable/drop_with_wind" />
+
+            <TextView
+                android:id="@+id/humidity_number"
+                style="@style/weather_info"
+                android:layout_marginStart="12dp"
+                android:text="45%" />
+
+            <TextView
+                android:id="@+id/humidity"
+                style="@style/weather_info_hint"
+                android:text="Humidity" />
+
+
+            <!-- 3________Восход_________-->
+            <ImageView
+                android:id="@+id/sunrise_img"
+                style="@style/weather_img"
+                android:src="@drawable/sunrise" />
+
+            <TextView
+                android:id="@+id/sunrise_time"
+                style="@style/weather_info"
+                android:text="3:25 AM" />
+
+            <TextView
+                android:id="@+id/sunrise"
+                style="@style/weather_info_hint"
+                android:layout_marginStart="6dp"
+                android:text="Sunrise" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linear2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="124dp"
+            android:orientation="vertical"
+            android:padding="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/linear1"
+            app:layout_constraintTop_toBottomOf="@id/date">
+
+            <TextView
+                android:id="@+id/temperature"
+                style="@style/weather_info"
+                android:text="25"
+                android:textSize="50sp" />
+            <TextView
+                android:id="@+id/temperature_number"
+                style="@style/weather_info_hint"
+                android:textSize="24sp"
+                android:text="°С"/>
+            <!--                android:layout_marginBottom=""-->
+
+            <ImageView
+                android:id="@+id/pressure_img"
+                style="@style/weather_img"
+                android:src="@drawable/pressure" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
