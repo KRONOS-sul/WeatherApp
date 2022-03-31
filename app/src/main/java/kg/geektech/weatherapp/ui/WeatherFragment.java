@@ -22,17 +22,17 @@ import java.util.Locale;
 
 import kg.geektech.weatherapp.R;
 import kg.geektech.weatherapp.data.models.MainResponse;
-import kg.geektech.weatherapp.databinding.FragmentInfoBinding;
+import kg.geektech.weatherapp.databinding.FragmentWeatherBinding;
 
-public class InfoFragment extends Fragment {
-    private FragmentInfoBinding binding;
+public class WeatherFragment extends Fragment {
+    private FragmentWeatherBinding binding;
     private WeatherViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentInfoBinding.inflate(inflater,container,false);
+        binding = FragmentWeatherBinding.inflate(inflater,container,false);
         return binding.getRoot();
     }
 
