@@ -10,11 +10,10 @@
         android:id="@+id/light_outside"
         android:layout_width="0dp"
         android:layout_height="280dp"
-        android:src="@drawable/day_light"
         android:scaleType="fitXY"
+        android:src="@drawable/day_light"
         app:layout_constraintBottom_toTopOf="@id/container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,23 +30,24 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:text="Sunday, 21 April 2007 | 7:54PM"
-            android:textSize="16sp"
             android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Sunday, 00 April 1999 | 0:00PM"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/country_city"
+            android:background="@drawable/shape"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Switzerland, Geneva"
-            android:textColor="@color/sky_blue"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="country"/>
 
         <LinearLayout
             android:id="@+id/linear1"
@@ -86,7 +86,7 @@
                 android:id="@+id/humidity_number"
                 style="@style/weather_info"
                 android:layout_marginStart="12dp"
-                android:text="45%" />
+                android:text="00%" />
 
             <TextView
                 style="@style/weather_info_hint"
@@ -101,7 +101,7 @@
             <TextView
                 android:id="@+id/sunrise_time"
                 style="@style/weather_info"
-                android:text="3:25 AM" />
+                android:text="0:00 AM" />
 
             <TextView
                 style="@style/weather_info_hint"
@@ -110,17 +110,15 @@
         </LinearLayout>
 
 
-
-
         <!-- 4________Температура_________-->
         <TextView
             android:id="@+id/temp"
             style="@style/weather_info"
-            android:layout_marginStart="12dp"
+            android:layout_marginEnd="160dp"
             android:layout_marginTop="20dp"
-            android:text="25"
+            android:text="00"
             android:textSize="50sp"
-            app:layout_constraintEnd_toStartOf="@id/country_city"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/linear1"
             app:layout_constraintTop_toBottomOf="@id/date" />
 
@@ -140,11 +138,21 @@
             style="@style/weather_info_hint"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
-            android:text="35°C↑\n16°C↓"
+            android:text="00°C↑"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/temp_celsius"
             app:layout_constraintTop_toTopOf="@id/temp_celsius" />
+
+        <TextView
+            android:id="@+id/expected_temp2"
+            style="@style/weather_info_hint"
+            android:layout_marginStart="12dp"
+            android:text="00°C↓"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/temp_celsius"
+            app:layout_constraintTop_toBottomOf="@id/expected_temp" />
 
 
         <LinearLayout
@@ -152,10 +160,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@id/linear1"
-            app:layout_constraintStart_toEndOf="@id/linear1"
-            app:layout_constraintEnd_toStartOf="@id/linear3"
             android:paddingStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/linear1"
+            app:layout_constraintEnd_toStartOf="@id/linear3"
+            app:layout_constraintStart_toEndOf="@id/linear1"
             app:layout_constraintTop_toBottomOf="@id/temp">
 
 
@@ -163,31 +171,35 @@
             <ImageView
                 style="@style/weather_img"
                 android:layout_marginStart="24dp"
-                android:src="@drawable/pressure"/>
+                android:src="@drawable/pressure" />
+
             <TextView
                 android:id="@+id/pressure_power"
                 style="@style/weather_info"
-                android:text="1,665mBar"/>
+                android:text="0,000mBar" />
+
             <TextView
                 style="@style/weather_info_hint"
-                android:text="Pressure"
-                android:layout_marginStart="12dp"/>
+                android:layout_marginStart="12dp"
+                android:text="Pressure" />
 
 
             <!-- 7________Закат_________-->
             <ImageView
                 style="@style/weather_img"
-                android:src="@drawable/sunset"
-                android:layout_marginStart="24dp"/>
+                android:layout_marginStart="24dp"
+                android:src="@drawable/sunset" />
+
             <TextView
                 android:id="@+id/sunset_time"
                 style="@style/weather_info"
-                android:text="4:59PM"
-                android:layout_marginStart="8dp"/>
+                android:layout_marginStart="8dp"
+                android:text="0:00PM" />
+
             <TextView
                 style="@style/weather_info_hint"
-                android:text="Sunset"
-                android:layout_marginStart="16dp"/>
+                android:layout_marginStart="16dp"
+                android:text="Sunset" />
         </LinearLayout>
 
 
@@ -197,41 +209,45 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@id/linear1"
-            app:layout_constraintStart_toEndOf="@id/linear2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/linear2"
             app:layout_constraintTop_toBottomOf="@id/temp">
 
 
             <!-- 8________Ветер_________-->
             <ImageView
                 style="@style/weather_img"
-                android:src="@drawable/wind"
-                android:layout_marginStart="36dp"/>
+                android:layout_marginStart="36dp"
+                android:src="@drawable/wind" />
+
             <TextView
                 android:id="@+id/wind_power"
                 style="@style/weather_info"
-                android:text="17 km/h"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="20dp"
+                android:text="00 km/h" />
+
             <TextView
                 style="@style/weather_info_hint"
-                android:text="Wind"
-                android:layout_marginStart="36dp"/>
+                android:layout_marginStart="36dp"
+                android:text="Wind" />
 
 
             <!-- 9________Текущее Время_________-->
             <ImageView
                 style="@style/weather_img"
-                android:src="@drawable/current_time"
-                android:layout_marginStart="36dp"/>
+                android:layout_marginStart="36dp"
+                android:src="@drawable/current_time" />
+
             <TextView
                 android:id="@+id/day_time_time"
                 style="@style/weather_info"
-                android:text="21h 1m"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="20dp"
+                android:text="00h 0m" />
+
             <TextView
                 style="@style/weather_info_hint"
-                android:text="Daytime"
-                android:layout_marginStart="24dp"/>
+                android:layout_marginStart="24dp"
+                android:text="Daytime" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
