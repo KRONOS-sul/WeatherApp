@@ -3,6 +3,8 @@ package kg.geektech.weatherapp.ui;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -22,5 +24,10 @@ public class WeatherViewModel extends ViewModel {
 
     public void getWeather(String city) {
         liveData = repository.getWeatherCharacters(city);
+    }
+
+    public MainResponse getWeatherFromDb(){
+        List<MainResponse> list = repository.getWeatherFromDb();
+        return list.get(list.size() - 1);
     }
 }

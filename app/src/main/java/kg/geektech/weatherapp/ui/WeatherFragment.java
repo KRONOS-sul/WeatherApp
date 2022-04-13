@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -22,15 +23,21 @@ import java.util.Date;
 import java.util.Locale;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import kg.geektech.weatherapp.ConnectionDetector;
 import kg.geektech.weatherapp.R;
 import kg.geektech.weatherapp.base.BaseFragment;
 import kg.geektech.weatherapp.data.models.MainResponse;
 import kg.geektech.weatherapp.databinding.FragmentWeatherBinding;
+import kg.geektech.weatherapp.room.WeatherDao;
 
 @AndroidEntryPoint
 public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     private WeatherViewModel viewModel;
     private WeatherFragmentArgs args;
+    private NavController navController;
+    WeatherDao dao;
+    Boolean isInternetProvided;
+    ConnectionDetector cd;
 
     @Override
     protected FragmentWeatherBinding bind() {
@@ -42,6 +49,7 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         args = WeatherFragmentArgs.fromBundle(getArguments());
+        cd = new ConnectionDetector(requireContext().getApplicationContext());
     }
 
     @Override
@@ -61,25 +69,29 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
     @Override
     protected void setupObservers() {
-        viewModel.liveData.observe(getViewLifecycleOwner(), mainResponseResource -> {
-            switch (mainResponseResource.status) {
-                case SUCCESS: {
-                    setData(mainResponseResource.data);
-                    binding.progress.setVisibility(View.GONE);
-                    break;
-                }
-                case ERROR: {
-                    binding.progress.setVisibility(View.GONE);
-                    break;
-                }
-                case LOADING: {
-                    binding.progress.setVisibility(View.VISIBLE);
+        isInternetProvided = cd.ConnectingToInternet();
+        if (isInternetProvided) {
 
-                    break;
-                }
-            }
-        });
+            viewModel.liveData.observe(getViewLifecycleOwner(), mainResponseResource -> {
+                switch (mainResponseResource.status) {
+                    case SUCCESS: {
+                        setData(mainResponseResource.data);
+                        binding.progress.setVisibility(View.GONE);
+                        break;
+                    }
+                    case ERROR: {
+                        binding.progress.setVisibility(View.GONE);
+                        break;
+                    }
+                    case LOADING: {
+                        binding.progress.setVisibility(View.VISIBLE);
 
+                        break;
+                    }
+                }
+            });
+        }else {setData(viewModel.getWeatherFromDb());
+        }
     }
 
     @Override
