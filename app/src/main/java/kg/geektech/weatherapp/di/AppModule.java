@@ -2,6 +2,8 @@ package kg.geektech.weatherapp.di;
 
 import android.content.Context;
 
+import androidx.room.Room;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -11,16 +13,15 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
+
 import kg.geektech.weatherapp.data.remote.WeatherApi;
 import kg.geektech.weatherapp.data.repositories.MainRepository;
-import kg.geektech.weatherapp.room.RoomClient;
 import kg.geektech.weatherapp.room.WeatherDao;
 import kg.geektech.weatherapp.room.WeatherDataBase;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 
 @Module
 @InstallIn(SingletonComponent.class)
@@ -29,7 +30,7 @@ public abstract class AppModule {
     public static OkHttpClient provideOkHttpClient() {
         return new OkHttpClient.Builder()
                 .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20,TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY)).build();
@@ -52,18 +53,20 @@ public abstract class AppModule {
 
     @Provides
     @Singleton
-    public static MainRepository provideMainRepository(WeatherApi api, WeatherDao dao) {
-        return new MainRepository(api, dao);
+    public static MainRepository provideMainRepository(WeatherApi api,WeatherDao dao){
+        return new MainRepository(api,dao);
     }
 
     @Provides
-    public static WeatherDataBase provideAppDatabase(@ApplicationContext Context context) {
-        return new RoomClient().provideDatabase(context);
-    }
-
-    @Singleton
-    @Provides
-    public static WeatherDao provideWeatherDao(WeatherDataBase database) {
+    public static WeatherDao provideDao(WeatherDataBase database) {
         return database.weatherDao();
+    }
+
+    @Provides
+    public static WeatherDataBase provideDataBase(@ApplicationContext Context context){
+        return Room.databaseBuilder(context,
+                WeatherDataBase.class, "WeatherDataBase")
+                .allowMainThreadQueries()
+                .build();
     }
 }

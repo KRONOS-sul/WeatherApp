@@ -39,11 +39,6 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     Boolean isInternetProvided;
     ConnectionDetector cd;
 
-    @Override
-    protected FragmentWeatherBinding bind() {
-        return FragmentWeatherBinding.inflate(getLayoutInflater());
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,18 +48,8 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     }
 
     @Override
-    protected void setupViews() {
-        viewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
-
-    }
-
-    @Override
-    protected void setupListeners() {
-        controller = Navigation.findNavController(requireActivity(), R.id.nav_host);
-        binding.countryCity.setOnClickListener(view -> {
-            controller.navigate(R.id.action_weatherFragment_to_countryCityFragment);
-        });
-
+    protected FragmentWeatherBinding bind() {
+        return FragmentWeatherBinding.inflate(getLayoutInflater());
     }
 
     @Override
@@ -85,25 +70,29 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
                     }
                     case LOADING: {
                         binding.progress.setVisibility(View.VISIBLE);
-
                         break;
                     }
                 }
             });
-        }else {setData(viewModel.getWeatherFromDb());
+        } else {
+            setData(viewModel.getWeatherFromDb());
         }
     }
 
     @Override
-    protected void callRequests() {
-        if (args.getCity() != null) {
-            viewModel.getWeather(args.getCity());
-        }
+    protected void setupViews() {
+        viewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
+    }
 
+    @Override
+    protected void setupListeners() {
+        controller = Navigation.findNavController(requireActivity(), R.id.nav_host);
+        binding.countryCity.setOnClickListener(view -> {
+            controller.navigate(R.id.action_weatherFragment_to_countryCityFragment);
+        });
     }
 
     private void setData(MainResponse response) {
-
 
         String urlImg = "https://openweathermap.org/img/wn/" + response.getWeather().get(0).getIcon() + ".png";
         String maxTemp = Math.round(response.getMain().getTempMax()) + "°C";
@@ -142,8 +131,11 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
         return formatter.format(calendar.getTime());
     }
 
-    public void country(View view) {
-
+    @Override
+    protected void callRequests() {
+        if (args.getCity() != null) {
+            viewModel.getWeather(args.getCity());
+        }
     }
 
     @Override

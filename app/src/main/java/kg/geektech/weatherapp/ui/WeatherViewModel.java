@@ -23,7 +23,7 @@ public class WeatherViewModel extends ViewModel {
     }
 
     public void getWeather(String city) {
-        liveData = repository.getWeatherCharacters(city);
+        liveData = repository.getWeather(city);
     }
 
     public MainResponse getWeatherFromDb(){

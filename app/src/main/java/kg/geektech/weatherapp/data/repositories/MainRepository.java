@@ -16,7 +16,13 @@ import retrofit2.Response;
 
 public class MainRepository {
 
+    private String city;
     private WeatherApi api;
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     private WeatherDao dao;
 
     @Inject
@@ -25,32 +31,35 @@ public class MainRepository {
         this.dao = dao;
     }
 
-
-
-    public MutableLiveData<Resource<MainResponse>> getWeatherCharacters(String city) {
+    public MutableLiveData<Resource<MainResponse>> getWeather(String city) {
         MutableLiveData<Resource<MainResponse>> liveData = new MutableLiveData<>();
         liveData.setValue(Resource.loading());
-        api.getWeatherApi(city, "944d35c23dc458eb05e201aeebaaf7bc", "metric")
-                .enqueue(new Callback<MainResponse>() {
-                    @Override
-                    public void onResponse(Call<MainResponse> call, Response<MainResponse> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            liveData.setValue(Resource.success(response.body()));
-                        } else {
-                            liveData.setValue(Resource.error(response.message(), null));
-                        }
-                    }
+        api.getWeatherApi(city, "944d35c23dc458eb05e201aeebaaf7bc", "metric").enqueue(new Callback<MainResponse>() {
+            @Override
+            public void onResponse(Call<MainResponse> call, Response<MainResponse> response) {
 
-                    @Override
-                    public void onFailure(Call<MainResponse> call, Throwable t) {
-                        liveData.setValue(Resource.error(t.getLocalizedMessage(), null));
-                    }
-                });
+                if (response.isSuccessful() && response.body() != null) {
+                    liveData.setValue(Resource.success(response.body()));
+                    dao.insertAll(response.body());
+                } else {
+                    liveData.setValue(Resource.error(response.message(), null));
 
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MainResponse> call, Throwable t) {
+                liveData.setValue(Resource.error(t.getLocalizedMessage(), null));
+            }
+        });
         return liveData;
     }
-    public List<MainResponse> getWeatherFromDb(){
+
+    public List<MainResponse> getWeatherFromDb() {
         return dao.getAllWeather();
     }
-
 }
+
+
+
+
